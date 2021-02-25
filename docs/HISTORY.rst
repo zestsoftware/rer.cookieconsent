@@ -4,7 +4,8 @@ Changelog
 0.4.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix relative path to privacy statement in multilingual sites.
+  [fredvd]
 
 
 0.4.3 (2020-12-14)
