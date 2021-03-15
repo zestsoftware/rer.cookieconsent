@@ -13,7 +13,6 @@ from zope.interface import implementer
 
 @implementer(IJSONDataProvider)
 class JSONConfigurationAdapter(object):
-
     def __init__(self, context, request, view):
         self.context = context
         self.request = request
@@ -22,22 +21,25 @@ class JSONConfigurationAdapter(object):
     def __call__(self):
         registry = queryUtility(IRegistry)
         settings = registry.forInterface(ICookieConsentSettings)
-        portal_state = getMultiAdapter((self.context, self.request),
-                                       name=u'plone_portal_state')
+        portal_state = getMultiAdapter(
+            (self.context, self.request), name=u"plone_portal_state"
+        )
         site = portal_state.portal()
         data_settings = IJSONifier(settings).json()
-        data_settings['actual_url'] = self.request['ACTUAL_URL']
-        data_settings['here_url'] = self.context.absolute_url()
-        data_settings['dashboard_url'] = get_url_to_dashboard()
-        data_settings['portal_path'] = site.absolute_url_path()
-        data_settings['portal_url'] = site.absolute_url()
+        data_settings["actual_url"] = (
+            self.request["ACTUAL_URL"] + "?" + self.request.QUERY_STRING
+        )
+        data_settings["here_url"] = self.context.absolute_url()
+        data_settings["dashboard_url"] = get_url_to_dashboard()
+        data_settings["portal_path"] = site.absolute_url_path()
+        data_settings["portal_url"] = site.absolute_url()
         return data_settings
 
 
 @implementer(IJSONDataProvider)
 class DOMConfigurationAdapter(object):
 
-    template = ViewPageTemplateFile('banner-configuration-labels.pt')
+    template = ViewPageTemplateFile("banner-configuration-labels.pt")
 
     def __init__(self, context, request, view):
         self.context = context

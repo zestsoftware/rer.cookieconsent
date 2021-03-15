@@ -10,6 +10,8 @@ Changelog
 - Add came_from variable and redirect back after saving optout-dashboard.
   [jladage]
 
+- Support url parameters like utm_campaign in redirect after accepting cookies.
+  [jladage]
 
 0.4.3 (2020-12-14)
 ------------------
