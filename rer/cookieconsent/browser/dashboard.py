@@ -24,6 +24,7 @@ class OptOutDashboardView(BrowserView):
         self.general_cookie_consent = None
         self.nextYear = DateTime() + 365
         request.set('disable_border', True)
+        self.came_from = request.get_header('referer')
 
     def __call__(self, *args, **kwargs):
         if 'form.submitted' in self.request.form:
@@ -32,11 +33,10 @@ class OptOutDashboardView(BrowserView):
                 message=_(u'Changes saved'),
                 type='info',
                 request=self.request)
-            self.request.response.redirect(
-                '{0}/@@{1}'.format(
-                    self.context.absolute_url(),
-                    self.__name__)
-                )
+            came_from = (
+                self.request.form.get("came_from") or self.context.absolute_url()
+            )
+            self.request.response.redirect(came_from)
         return self.index()
 
     def _save_changes(self):
@@ -55,12 +55,7 @@ class OptOutDashboardView(BrowserView):
                 self.setOneYearCookie('{0}-optout'.format(cookie), value)
 
     def setOneYearCookie(self, name, value):
-        setCookie(
-            self.request.response,
-            name,
-            value,
-            expires=self.nextYear.rfc822()
-        )
+        setCookie(self.request.response, name, value, expires=self.nextYear.rfc822())
 
     def _i18n_alternative(self, app_id, id):
         oo_i18n_id = u'{0}_optout_{1}'.format(app_id, id)
@@ -91,28 +86,52 @@ class OptOutDashboardView(BrowserView):
 
             # i18n
             if len(oo_conf.texts) == 0:
-                optout['title'] = self._i18n_alternative(
-                    oo_conf.app_id, u'title')
+                optout['title'] = self._i18n_alternative(oo_conf.app_id, u'title')
                 optout['description'] = self._i18n_alternative(
-                    oo_conf.app_id, u'description')
+                    oo_conf.app_id, u'description'
+                )
             else:
                 for i, app_text_content in enumerate(oo_conf.texts):
                     if current_language == app_text_content.lang:
-                        optout['title'] = app_text_content.app_title if app_text_content.app_title else self._i18n_alternative(oo_conf.app_id, u'title')  # noqa
-                        raw_i18n_desc = app_text_content.app_description if app_text_content.app_description else self._i18n_alternative(oo_conf.app_id, u'description')  # noqa
-                        optout['description'] = '<br />'.join(raw_i18n_desc.strip().splitlines())  # noqa
+                        optout['title'] = (
+                            app_text_content.app_title
+                            if app_text_content.app_title
+                            else self._i18n_alternative(oo_conf.app_id, u'title')
+                        )  # noqa
+                        raw_i18n_desc = (
+                            app_text_content.app_description
+                            if app_text_content.app_description
+                            else self._i18n_alternative(oo_conf.app_id, u'description')
+                        )  # noqa
+                        optout['description'] = '<br />'.join(
+                            raw_i18n_desc.strip().splitlines()
+                        )  # noqa
                         break
                 else:
                     # no lang found: use the first one as default
                     default_conf = oo_conf.texts[0]
-                    optout['title'] = default_conf.app_title if default_conf.app_title else self._i18n_alternative(oo_conf.app_id, u'title')  # noqa
-                    raw_i18n_desc = default_conf.app_description if default_conf.app_description else self._i18n_alternative(oo_conf.app_id, u'description')  # noqa
-                    optout['description'] = '<br />'.join(raw_i18n_desc.strip().splitlines())  # noqa
+                    optout['title'] = (
+                        default_conf.app_title
+                        if default_conf.app_title
+                        else self._i18n_alternative(oo_conf.app_id, u'title')
+                    )  # noqa
+                    raw_i18n_desc = (
+                        default_conf.app_description
+                        if default_conf.app_description
+                        else self._i18n_alternative(oo_conf.app_id, u'description')
+                    )  # noqa
+                    optout['description'] = '<br />'.join(
+                        raw_i18n_desc.strip().splitlines()
+                    )  # noqa
 
             # check cookies: to enable the radio as "deny" we care about at
             # least of one cookie
-            negative_cookies = [c for c in oo_conf.cookies
-                    if not cookies.get("%s-optout" % c, None) or cookies["%s-optout" % c]=='false']  # noqa
+            negative_cookies = [
+                c
+                for c in oo_conf.cookies
+                if not cookies.get('%s-optout' % c, None)
+                or cookies['%s-optout' % c] == 'false'
+            ]  # noqa
             optout['cookie'] = False if negative_cookies else True
             results.append(optout)
         return results

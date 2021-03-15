@@ -7,6 +7,9 @@ Changelog
 - Fix relative path to privacy statement in multilingual sites.
   [fredvd]
 
+- Add came_from variable and redirect back after saving optout-dashboard.
+  [jladage]
+
 
 0.4.3 (2020-12-14)
 ------------------

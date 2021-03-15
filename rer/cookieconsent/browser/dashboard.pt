@@ -125,6 +125,8 @@
         </div>
 
         <input type="hidden" name="form.submitted" value="1" />
+        <input type="hidden" name="came_from" value="/"
+               tal:attributes="value string:${view/came_from}" />
         <input type="submit" name="Save" value="Save" class="context"
                i18n:domain="plone" i18n:attributes="value" disabled="disabled" />
     </form>
