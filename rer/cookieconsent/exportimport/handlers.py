@@ -71,6 +71,9 @@ class CookieConsentXMLAdapter(XMLAdapterBase):
                     if subnode.nodeType != subnode.ELEMENT_NODE:
                         continue
                     self._configureOptOut(subnode, settings)
+            elif tagName == 'property' and name.lower() == 'enabled':
+                settings.enabled = self._getNodeText(child).lower() == 'true'
+
 
     def _configureCookieConsentBanner(self, node, settings):
         """Set an ICookieBannerEntry entry in the registry

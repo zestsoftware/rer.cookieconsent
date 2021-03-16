@@ -366,7 +366,7 @@
         $('#' + BANNER_CONF_ID).text() || $('#' + BANNER_CONF_ID).html();
       bannerConfiguration = $.parseJSON(bannerRawConf);
       if (
-        !bannerConfiguration ||
+        !bannerConfiguration || bannerConfiguration.enabled === false ||
         bannerConfiguration.cookie_consent_configuration === undefined ||
         bannerConfiguration.cookie_consent_configuration.length === 0
       ) {

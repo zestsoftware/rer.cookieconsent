@@ -243,15 +243,14 @@ class ICookieBannerSettings(Interface):
     """Settings for the Cookie Consent banner
     """
 
-    # enabled = schema.Bool(
-    #    title=_(u'Consent banner enabled'),
-    #    description=_(
-    #        'help_cookie_consent_enabled',
-    #        default=_(u'If checked, the cookie consent banner will be displayed.')),
-
-    #    required=False,
-    #    default=False,
-    #)
+    enabled = schema.Bool(
+        title=_(u'Consent banner enabled'),
+        description=_(
+            'help_cookie_consent_enabled',
+            default=_(u'If checked, the cookie consent banner will be displayed.')),
+        required=False,
+        default=False,
+    )
 
     accept_on_click = schema.Bool(
         title=_(u'Accept policy on every click'),

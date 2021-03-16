@@ -13,6 +13,10 @@ Changelog
 - Support url parameters like utm_campaign in redirect after accepting cookies.
   [jladage]
 
+- Added main on/off switch to control panel. Requires a reinstall of the addon.
+  [jladage]
+
+
 0.4.3 (2020-12-14)
 ------------------
 
