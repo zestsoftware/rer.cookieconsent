@@ -4,6 +4,10 @@ Changelog
 0.4.4 (unreleased)
 ------------------
 
+- Add basic translations for optout save for ES, GR, PL. [fredvd]
+
+- Translate portal message after submitting opt_out dashboard. [fredvd]
+
 - Shortcut registry settings request in init_cookis because the upgrade step for 'enable' cannot execute. 
   [fredvd]
   

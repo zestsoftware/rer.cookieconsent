@@ -26,17 +26,18 @@ class OptOutDashboardView(BrowserView):
         request.set('disable_border', True)
 
     def came_from(self):
-        return request.get_header('referer', '')
+        return self.request.get_header('referer', '')
 
     def __call__(self, *args, **kwargs):
         if 'form.submitted' in self.request.form:
             self._save_changes()
             api.portal.show_message(
-                message=_(u'Changes saved'),
+                message=translate(_(u'Changes saved'),
+                                  context=self.request),
                 type='info',
                 request=self.request)
             next = self.request.form.get('came_from', None)
-            if next and api.portal.get().isURLInPortal(next):
+            if next and api.portal.get_tool('portal_url').isURLInPortal(next):
                 pass
             else:
                 next = self.context.absolute_url()

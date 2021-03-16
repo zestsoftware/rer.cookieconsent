@@ -26,5 +26,4 @@ class ResetOptoutView(BrowserView):
             # Let's support utm_ and other attributes in redirect.
             if qs != "":
                 here_url = unquote_plus("=".join(qs.split("=")[1:]))
-        print(here_url)
         self.request.response.redirect(here_url)
