@@ -24,7 +24,9 @@ class OptOutDashboardView(BrowserView):
         self.general_cookie_consent = None
         self.nextYear = DateTime() + 365
         request.set('disable_border', True)
-        self.came_from = request.get_header('referer')
+
+    def came_from(self):
+        return request.get_header('referer', '')
 
     def __call__(self, *args, **kwargs):
         if 'form.submitted' in self.request.form:
@@ -33,10 +35,12 @@ class OptOutDashboardView(BrowserView):
                 message=_(u'Changes saved'),
                 type='info',
                 request=self.request)
-            came_from = (
-                self.request.form.get("came_from") or self.context.absolute_url()
-            )
-            self.request.response.redirect(came_from)
+            next = self.request.form.get('came_from', None)
+            if next and api.portal.get().isURLInPortal(next):
+                pass
+            else:
+                next = self.context.absolute_url()
+            self.request.response.redirect(next)
         return self.index()
 
     def _save_changes(self):

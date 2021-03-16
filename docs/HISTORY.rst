@@ -4,6 +4,12 @@ Changelog
 0.4.4 (unreleased)
 ------------------
 
+- Shortcut registry settings request in init_cookis because the upgrade step for 'enable' cannot execute. 
+  [fredvd]
+  
+- Update uninstall profile to remove resources and controlpanel
+  [fredvd]
+
 - Add upgrade step for new main 'enable' switch in control panel.
   [fredvd]
   

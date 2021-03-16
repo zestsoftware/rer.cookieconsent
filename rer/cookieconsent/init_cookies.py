@@ -50,19 +50,20 @@ def optout_all(request, value=None, update=False, writeRequest=False):
     provided
     """
     registry = queryUtility(IRegistry)
-    settings = registry.forInterface(ICookieConsentSettings)
-    for oo_conf in settings.optout_configuration:
-        for cookie in oo_conf.cookies:
-            cookiename = "{0}-optout".format(cookie)
-            if cookiename in request.cookies and not update:
-                continue
-            nextYear = DateTime() + 365
-            cookievalue = value if value else oo_conf.default_value
-            setCookie(
-                request.response,
-                cookiename,
-                cookievalue,
-                expires=nextYear.rfc822(),
-            )
-            if writeRequest:
-                request.cookies[cookiename] = cookievalue
+    settings = registry.forInterface(ICookieConsentSettings, check=False)
+    if settings and settings.optout_configuration:
+        for oo_conf in settings.optout_configuration:
+            for cookie in oo_conf.cookies:
+                cookiename = "{0}-optout".format(cookie)
+                if cookiename in request.cookies and not update:
+                    continue
+                nextYear = DateTime() + 365
+                cookievalue = value if value else oo_conf.default_value
+                setCookie(
+                    request.response,
+                    cookiename,
+                    cookievalue,
+                    expires=nextYear.rfc822(),
+                )
+                if writeRequest:
+                    request.cookies[cookiename] = cookievalue
