@@ -4,6 +4,9 @@ Changelog
 0.4.4 (unreleased)
 ------------------
 
+- Add upgrade step for new main 'enable' switch in control panel.
+  [fredvd]
+  
 - Fix relative path to privacy statement in multilingual sites.
   [fredvd]
 

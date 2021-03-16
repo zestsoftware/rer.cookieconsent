@@ -26,5 +26,15 @@
       handler=".upgrades.to_2001"
     />
   </genericsetup:upgradeSteps>
+  <genericsetup:upgradeSteps
+    source="2001"
+    destination="2002"
+    profile="rer.cookieconsent:default">
+
+    <genericsetup:upgradeDepends
+      title="Add enabled field, update resource compiled time"
+      import_steps="plone.app.registry"
+    />
+  </genericsetup:upgradeSteps>
 
 </configure>

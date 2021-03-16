@@ -20,7 +20,7 @@
     <value key="compile">True</value>
     <value key="jscompilation">++plone++rer.cookieconsent/cookiepolicy.js</value>
     <value key="csscompilation">++plone++rer.cookieconsent/cookiepolicy.css</value>
-    <value key="last_compilation">2019-11-26 00:00:00</value>
+    <value key="last_compilation">2021-03-16 10:00:00</value>
     <value key="merge_with">default</value>
   </records>
 </registry>
